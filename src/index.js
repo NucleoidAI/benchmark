@@ -1,6 +1,6 @@
 const { fork } = require("child_process");
 
-const pNumber = 10;
+const pNumber = 5;
 
 const processes = [];
 for (let i = 0; i < pNumber; i++) {
@@ -19,7 +19,6 @@ function printResult() {
   console.log(
     list,
     list.length,
-    counter,
     "avg :",
     list.reduce((prev, curr) => {
       return curr.time + prev;
