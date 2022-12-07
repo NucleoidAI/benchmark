@@ -8,6 +8,9 @@ const Order = sequelize.define("Order", {
   },
 });
 
-Order.belongsTo(Item);
+Order.belongsTo(Item, {
+  foreignKey: "item",
+  onDelete: "CASCADE",
+});
 
 module.exports = Order;

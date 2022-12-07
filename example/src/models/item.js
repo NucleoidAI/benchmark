@@ -7,6 +7,7 @@ const Item = sequelize.define("Item", {
   },
   barcode: {
     type: DataTypes.STRING,
+    unique: true,
   },
 });
 
