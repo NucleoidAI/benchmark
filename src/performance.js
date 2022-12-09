@@ -1,6 +1,6 @@
 const request = require("./scenario");
+const count = parseInt(process.argv[2] || 1);
 
-const count = 1;
 const promises = [];
 
 const before = Date.now();

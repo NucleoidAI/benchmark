@@ -2,7 +2,7 @@ const { faker } = require("@faker-js/faker");
 const axios = require("axios").default;
 const { equal } = require("assert");
 
-const url = "http://localhost:3000";
+const url = process.argv[3] || "http://localhost:3000";
 
 const steps = [
   // 0 Create item
