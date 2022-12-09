@@ -2,7 +2,7 @@ const { faker } = require("@faker-js/faker");
 const axios = require("axios").default;
 const { equal } = require("assert");
 
-const url = "https://nucleoid.com/sandbox/84a63e3e-93f5-4014-b6c1-c62ebfe2500c";
+const url = "http://localhost:3000";
 
 const steps = [
   // 0 Create item
@@ -80,14 +80,18 @@ const steps = [
   },
 ];
 async function run() {
-  const item = await steps[0]();
-  await steps[1](item);
-  await steps[2](item);
-  await steps[3](item);
-  const order = await steps[4](item);
-  await steps[5](item, order);
-  await steps[6](item, order);
-  await steps[7](item, order);
+  try {
+    const item = await steps[0]();
+    await steps[1](item);
+    await steps[2](item);
+    await steps[3](item);
+    const order = await steps[4](item);
+    await steps[5](item, order);
+    await steps[6](item, order);
+    await steps[7](item, order);
+  } catch (err) {
+    console.log(err);
+  }
 }
 
 module.exports = { run };

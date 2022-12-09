@@ -1,11 +1,15 @@
 const request = require("./scenario");
 
 const count = 1;
+const promises = [];
 
 const before = Date.now();
 for (let i = 0; i < count; i++) {
-  request.run(i);
+  const promise = request.run(i);
+  promises.push(promise);
 }
-const after = Date.now();
 
-console.log(after - before);
+Promise.all(promises).then(() => {
+  const after = Date.now();
+  console.log(after - before);
+});
