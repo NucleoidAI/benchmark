@@ -4,6 +4,7 @@ const { Sequelize } = require("sequelize");
 const sequelize = new Sequelize("order_db", "order", "password", {
   host: "mysql.nucleoid.com",
   dialect: "mysql",
+  logging: false,
 });
 
 module.exports = sequelize;
