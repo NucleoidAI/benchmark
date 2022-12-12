@@ -3,7 +3,7 @@ const Item = require("../dto/item");
 const itemService = require("../services/item-service");
 const Joi = require("joi");
 
-router.post("/", async function (req, res, next) {
+router.post("/", async (req, res) => {
   const schema = Joi.object({
     name: Joi.string().required(),
     barcode: Joi.string().required(),
@@ -16,7 +16,7 @@ router.post("/", async function (req, res, next) {
   res.json({ ...result });
 });
 
-router.get("/:id", async function (req, res, next) {
+router.get("/:id", async (req, res) => {
   const schema = Joi.object({
     id: Joi.number().required(),
   });
@@ -28,7 +28,7 @@ router.get("/:id", async function (req, res, next) {
   item ? res.json(item) : res.status(404).end();
 });
 
-router.post("/:id", async function (req, res, next) {
+router.post("/:id", async (req, res) => {
   const paramsSchema = Joi.object({
     id: Joi.number().required(),
   });
@@ -45,7 +45,7 @@ router.post("/:id", async function (req, res, next) {
   res.status(200).end();
 });
 
-router.delete("/:id", async function (req, res, next) {
+router.delete("/:id", async (req, res) => {
   const schema = Joi.object({
     id: Joi.number().required(),
   });
@@ -55,7 +55,7 @@ router.delete("/:id", async function (req, res, next) {
   res.status(200).end();
 });
 
-router.get("/", async function (req, res, next) {
+router.get("/", async (req, res) => {
   const schema = Joi.object({
     name: Joi.string().required(),
   });
