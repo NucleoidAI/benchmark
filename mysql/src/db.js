@@ -1,9 +1,10 @@
 const { Sequelize } = require("sequelize");
 
-// const sequelize = new Sequelize(process.env.CONNECTION_STRING, { logging: false });
 const sequelize = new Sequelize("order_db", "order", "password", {
-  host: "mysql.nucleoid.com",
-  dialect: "mysql",
+  host: "postgres.nucleoid.com",
+  dialect: "postgres",
+  // host: "postgres.nucleoid.com",
+  // dialect: "postgres",
   logging: false,
 });
 
