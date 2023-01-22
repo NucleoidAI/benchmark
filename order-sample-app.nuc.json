@@ -1,0 +1,242 @@
+{
+  "api": {
+    "/": {
+      "get": {
+        "summary": "Hello World",
+        "description": "Hello World",
+        "params": [
+          {
+            "name": "example",
+            "in": "query",
+            "type": "string",
+            "required": false,
+            "description": "example"
+          }
+        ],
+        "request": { "type": "object", "properties": {} },
+        "response": {
+          "type": "object",
+          "properties": { "name": { "type": "string" } }
+        },
+        "x-nuc-action": "\nfunction action(req) {\n    return { message: \"Hello World\" };\n}\n"
+      }
+    },
+    "/items": {
+      "get": {
+        "summary": "Get item list by name",
+        "description": "Get item by name",
+        "params": [
+          { "in": "query", "type": "string", "required": true, "name": "name" }
+        ],
+        "request": { "type": "object", "properties": {} },
+        "response": {
+          "type": "array",
+          "items": { "$ref": "#/components/schemas/Item" }
+        },
+        "x-nuc-action": "\nfunction action(req) {\n    const name = req.query.name;\n    return Item.filter(item => item.name === name);\n}\n"
+      },
+      "post": {
+        "summary": "Create item",
+        "description": "Create item",
+        "request": {
+          "type": "object",
+          "properties": {
+            "name": { "type": "string" },
+            "barcode": { "type": "string" }
+          }
+        },
+        "response": { "$ref": "#/components/schemas/Item" },
+        "x-nuc-action": "\nfunction action(req) {\n    const name = req.body.name;\n    const barcode = req.body.barcode;\n    const check = Item.find(i => i.barcode === barcode);\n    if (check) {\n        throw \"DUPLICATE_BARCODE\";\n    }\n    return new Item(name, barcode);\n}\n"
+      }
+    },
+    "/items/{item}": {
+      "get": {
+        "summary": "Get item by id",
+        "description": "Get item by id",
+        "params": [
+          {
+            "name": "item",
+            "in": "path",
+            "type": "string",
+            "required": true,
+            "description": "item"
+          }
+        ],
+        "request": { "type": "object", "properties": {} },
+        "response": { "$ref": "#/components/schemas/Item" },
+        "x-nuc-action": "\nfunction action(req) {\n    const item = req.params.item;\n    return Item[item];\n}\n"
+      },
+      "post": {
+        "summary": "Update item",
+        "description": "Update item",
+        "params": [
+          {
+            "name": "item",
+            "in": "path",
+            "type": "string",
+            "required": true,
+            "description": "item"
+          }
+        ],
+        "request": {
+          "type": "object",
+          "properties": {
+            "name": { "type": "string" },
+            "barcode": { "type": "string" }
+          }
+        },
+        "response": { "$ref": "#/components/schemas/Item" },
+        "x-nuc-action": "\nfunction action(req) {\n    const name = req.body.name;\n    const barcode = req.body.barcode;\n    const check = Item.find(i => i.barcode === barcode);\n    if (check) {\n        throw \"DUPLICATE_BARCODE\";\n    }\n    const item = Item[req.params.item];\n    item.name = name;\n    item.barcode = barcode;\n    return item;\n}\n"
+      },
+      "del": {
+        "summary": "Delete item",
+        "description": "Delete item",
+        "params": [
+          {
+            "name": "item",
+            "in": "path",
+            "type": "string",
+            "required": true,
+            "description": "item"
+          }
+        ],
+        "request": {
+          "type": "object",
+          "properties": { "id": { "type": "string" } }
+        },
+        "response": {
+          "type": "object",
+          "properties": { "id": { "type": "string" } }
+        },
+        "x-nuc-action": "\nfunction action(req) {\n    const item = req.params.item;\n    delete Item[item];\n}\n"
+      }
+    },
+    "/orders": {
+      "get": {
+        "summary": "Get order list",
+        "description": "Get order list",
+        "params": [],
+        "request": {
+          "type": "object",
+          "properties": { "id": { "type": "string" } }
+        },
+        "response": {
+          "type": "array",
+          "items": { "$ref": "#/components/schemas/Order" }
+        },
+        "x-nuc-action": "\nfunction action(req) {\n    return Order;\n}\n"
+      },
+      "post": {
+        "summary": "Create order",
+        "description": "Create order",
+        "params": [],
+        "request": {
+          "type": "object",
+          "properties": {
+            "item": { "type": "string" },
+            "qty": { "type": "integer" }
+          }
+        },
+        "response": { "$ref": "#/components/schemas/Order" },
+        "x-nuc-action": "\nfunction action(req) {\n    const item = Item[req.body.item];\n    const qty = req.body.qty;\n    if (!item) {\n        throw \"INVALID_ITEM\";\n    }\n    return new Order(item, qty);\n}\n"
+      }
+    },
+    "/orders/{order}": {
+      "get": {
+        "summary": "Get order by id",
+        "description": "Get order by id",
+        "params": [
+          {
+            "name": "order",
+            "in": "path",
+            "type": "string",
+            "required": true,
+            "description": "order"
+          }
+        ],
+        "request": { "type": "object", "properties": {} },
+        "response": { "$ref": "#/components/schemas/Order" },
+        "x-nuc-action": "\nfunction action(req) {\n    const order = req.params.order;\n    return Order[order];\n}\n"
+      },
+      "post": {
+        "summary": "Update order",
+        "description": "Update order",
+        "params": [
+          {
+            "name": "order",
+            "in": "path",
+            "type": "string",
+            "required": true,
+            "description": "Order id"
+          }
+        ],
+        "request": {
+          "type": "object",
+          "properties": {
+            "item": { "type": "string" },
+            "qty": { "type": "integer" }
+          }
+        },
+        "response": { "$ref": "#/components/schemas/Order" },
+        "x-nuc-action": "\nfunction action(req) {\n    const item = Item[req.body.item];\n    const qty = req.body.qty;\n    if (!item) {\n        throw \"INVALID_ITEM\";\n    }\n    const order = Order[req.params.order];\n    order.item = item;\n    order.qty = qty;\n    return order;\n}\n"
+      },
+      "del": {
+        "summary": "Delete order",
+        "description": "Delete order",
+        "params": [
+          {
+            "name": "order",
+            "in": "path",
+            "type": "string",
+            "required": true,
+            "description": "Order id"
+          }
+        ],
+        "request": {
+          "type": "object",
+          "properties": { "id": { "type": "string" } }
+        },
+        "response": {
+          "type": "object",
+          "properties": { "id": { "type": "string" } }
+        },
+        "x-nuc-action": "\nfunction action(req) {\n    const order = req.params.order;\n    delete Order[order];\n}\n"
+      }
+    }
+  },
+  "types": {
+    "Item": {
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "barcode": { "type": "string" }
+      }
+    },
+    "Order": {
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "item": { "$ref": "#/components/schemas/Item" },
+        "qty": { "type": "integer" }
+      }
+    }
+  },
+  "functions": [
+    {
+      "path": "/Order",
+      "params": [],
+      "type": "CLASS",
+      "ext": "js",
+      "definition": "class Order {\n    constructor(item, qty) {\n        this.item = item;\n        this.qty = qty;\n        this.date = Date.now();\n    }\n}\n"
+    },
+    {
+      "path": "/Item",
+      "params": [],
+      "type": "CLASS",
+      "ext": "js",
+      "definition": "class Item {\n    constructor(name, barcode) {\n        this.name = name;\n        this.barcode = barcode;\n    }\n}\n"
+    }
+  ],
+  "action": "start"
+}
